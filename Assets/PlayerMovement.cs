@@ -18,8 +18,20 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         PlayerMove();
-        
+        KeepCarUpright();
     }
+
+    void KeepCarUpright()
+    {
+        Vector3 currentRotation = rb.rotation.eulerAngles;
+
+       
+        Quaternion targetRotation = Quaternion.Euler(0, currentRotation.y, 0);
+
+      
+        rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 5f));
+    }
+
 
     public void OnMove(InputAction.CallbackContext MoveValue)
     {
