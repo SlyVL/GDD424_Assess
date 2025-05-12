@@ -8,8 +8,10 @@ public class PlayerMovement : MonoBehaviour
 {
 
     [SerializeField] Rigidbody rb;
-    Vector3 moveInput;
+    float forwardInput;
+    float turnInput;
     [SerializeField] float MovementMultiplier;
+    [SerializeField] float TurnMultiplier;
 
 
 
@@ -22,12 +24,19 @@ public class PlayerMovement : MonoBehaviour
     public void OnMove(InputAction.CallbackContext MoveValue)
     {
         var tempvar = MoveValue.ReadValue<Vector2>();
-        moveInput = new Vector3(tempvar.x, 0, tempvar.y);
+        forwardInput = tempvar.y;
+        turnInput = tempvar.x;
         
     }
 
+
+    
     public void PlayerMove()
     {
-        rb.AddForce(moveInput * MovementMultiplier);
+        rb.AddForce(transform.forward * forwardInput * MovementMultiplier);
+        rb.AddTorque(0, turnInput * TurnMultiplier, 0);
+        rb.AddTorque(-rb.angularVelocity * 0.8f);
+
     }
+
 }
