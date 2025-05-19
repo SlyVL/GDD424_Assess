@@ -10,8 +10,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Rigidbody rb;
     float forwardInput;
     float turnInput;
-    [SerializeField] float MovementMultiplier;
-    [SerializeField] float TurnMultiplier;
+    public float MovementMultiplier = 1000f;
+    public float TurnMultiplier = 3f;
+    public float DownforceMultiplier = 10f;
+
 
 
 
@@ -25,10 +27,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 currentRotation = rb.rotation.eulerAngles;
 
-       
+
         Quaternion targetRotation = Quaternion.Euler(0, currentRotation.y, 0);
 
-      
+
         rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 5f));
     }
 
@@ -38,19 +40,30 @@ public class PlayerMovement : MonoBehaviour
         var tempvar = MoveValue.ReadValue<Vector2>();
         forwardInput = tempvar.y;
         turnInput = tempvar.x;
-        
+
     }
 
 
-    
+
     public void PlayerMove()
     {
-        //allows the car to move forwards
-        rb.AddForce(transform.forward * forwardInput * MovementMultiplier);
 
-        //allows the car to turn and have a drift like feel to it
-        rb.AddTorque(0, turnInput * TurnMultiplier, 0);
-        rb.AddTorque(-rb.angularVelocity * 0.8f);
+        // Apply forward movement
+        rb.AddForce(transform.forward * forwardInput * MovementMultiplier, ForceMode.Acceleration);
+
+        // Simulate grip by reducing lateral slip
+        Vector3 forwardVel = Vector3.Dot(rb.velocity, transform.forward) * transform.forward;
+        Vector3 lateralVel = Vector3.Dot(rb.velocity, transform.right) * transform.right;
+        rb.velocity = forwardVel + lateralVel * 0.2f;
+
+        // Apply turning based on speed
+        float speedFactor = Mathf.Clamp01(rb.velocity.magnitude / 10f);
+        float turnAmount = turnInput * TurnMultiplier * speedFactor;
+        Quaternion deltaRot = Quaternion.Euler(0f, turnAmount, 0f);
+        rb.MoveRotation(rb.rotation * deltaRot);
+
+        // Add downforce to simulate grip
+        rb.AddForce(-transform.up * rb.velocity.magnitude * DownforceMultiplier);
 
         //Caps the speed of the car
         var tempVelocityX = Mathf.Clamp(rb.angularVelocity.x, -4, 4);
