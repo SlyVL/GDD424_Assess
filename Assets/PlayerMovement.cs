@@ -45,10 +45,18 @@ public class PlayerMovement : MonoBehaviour
     
     public void PlayerMove()
     {
+        //allows the car to move forwards
         rb.AddForce(transform.forward * forwardInput * MovementMultiplier);
+
+        //allows the car to turn and have a drift like feel to it
         rb.AddTorque(0, turnInput * TurnMultiplier, 0);
         rb.AddTorque(-rb.angularVelocity * 0.8f);
 
+        //Caps the speed of the car
+        var tempVelocityX = Mathf.Clamp(rb.angularVelocity.x, -4, 4);
+        var tempVelocityY = Mathf.Clamp(rb.angularVelocity.y, -4, 4);
+        var tempVelocityZ = Mathf.Clamp(rb.angularVelocity.z, -4, 4);
+        rb.angularVelocity = new Vector3(tempVelocityX, tempVelocityY, tempVelocityZ);
     }
 
 }
