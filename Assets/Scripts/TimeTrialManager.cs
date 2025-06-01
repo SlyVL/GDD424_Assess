@@ -5,6 +5,7 @@ using TMPro;
 
 public class TimeTrialManager : MonoBehaviour
 {
+    //Sets everything needed for the checkpoints such as the checkpoints themselves along with the timer texts
     public Transform[] checkpoints;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI finalTimeText;
@@ -21,7 +22,7 @@ public class TimeTrialManager : MonoBehaviour
             UpdateTimerUI();
         }
     }
-
+    //starts the timer for the race
     public void StartRace()
     {
         timer = 0f;
@@ -30,7 +31,7 @@ public class TimeTrialManager : MonoBehaviour
         raceFinished = false;
         finalTimeText.gameObject.SetActive(false);
     }
-
+    //hit checkpoints and checks if you are hitting it in order along with hitting the last one to finish the race
     public void HitCheckpoint(Checkpoint checkpoint)
     {
         if (!raceStarted) return;
@@ -52,7 +53,7 @@ public class TimeTrialManager : MonoBehaviour
 
 
 
-
+    //finish race timer
     void FinishRace()
     {
         raceFinished = true;
@@ -60,7 +61,7 @@ public class TimeTrialManager : MonoBehaviour
         finalTimeText.text = "Final Time: " + timer.ToString("F2") + "s";
         finalTimeText.gameObject.SetActive(true);
     }
-
+    //chat gpt to update the timer UI 
     void UpdateTimerUI()
     {
         timerText.text = timer.ToString("F2") + "s";

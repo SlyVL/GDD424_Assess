@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    //setting values and rigidbody to the car 
     [SerializeField] Rigidbody rb;
     float forwardInput;
     float turnInput;
@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-
+    //fixed update so the movement and keeping the car upright more consistently 
     private void FixedUpdate()
     {
         PlayerMove();
@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext MoveValue)
     {
+        //moves the car along a vector 2 x,y way not Z
         var tempvar = MoveValue.ReadValue<Vector2>();
         forwardInput = tempvar.y;
         turnInput = tempvar.x;
@@ -48,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     public void PlayerMove()
     {
 
-        // Apply forward movement
+        // adds forward movement
         rb.AddForce(transform.forward * forwardInput * MovementMultiplier, ForceMode.Acceleration);
 
         //chatgpt to do something with lateral velocity

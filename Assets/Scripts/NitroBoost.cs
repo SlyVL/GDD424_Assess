@@ -9,7 +9,7 @@ public class NitroBoost : MonoBehaviour
 
     public InputActionReference boostAction; 
 
-
+    //sets values for the nitro and adds a reference to the slider 
     public float normalSpeed = 10f;
     public float boostMultiplier = 2f;
     public float maxNitro = 5f;
@@ -32,7 +32,7 @@ public class NitroBoost : MonoBehaviour
         boostAction.action.Disable();
     }
 
-
+    //keeps track of the nitro and gets the rigidbody and moves the car accordingly
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -47,13 +47,14 @@ public class NitroBoost : MonoBehaviour
         HandleCooldown();
         UpdateUI();
     }
-
+    //makes it so the nitro speeds up the car
     void FixedUpdate()
     {
         float speed = isBoosting ? normalSpeed * boostMultiplier : normalSpeed;
         rb.velocity = transform.forward * speed;
     }
 
+    //sets a depletion of nitro
     void HandleInput()
     {
         if (boostAction.action.ReadValue<float>() > 0.5f && currentNitro > 0 && !isCooldown)
@@ -85,7 +86,7 @@ public class NitroBoost : MonoBehaviour
         isCooldown = true;
         cooldownTimer = nitroRegenCooldown;
     }
-
+    //sets the timer for the cooldown
     void HandleCooldown()
     {
         if (isCooldown)
@@ -98,7 +99,7 @@ public class NitroBoost : MonoBehaviour
             }
         }
     }
-
+    //updates the UI of the nitro bar slider
     void UpdateUI()
     {
         if (nitroBar != null)

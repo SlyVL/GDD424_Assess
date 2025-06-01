@@ -12,13 +12,13 @@ public class Checkpoint : MonoBehaviour
 
         TimeTrialManager manager = FindObjectOfType<TimeTrialManager>();
 
-        // If first checkpoint, start race
+        // If colliding with first checkpoint start the race
         if (checkpointIndex == 0 && !manager.IsRaceStarted())
         {
             manager.StartRace();
         }
 
-        // Notify the manager this checkpoint was hit
+        //let the manager know the checkpoint was hit 
         manager.HitCheckpoint(this);
     }
 }
