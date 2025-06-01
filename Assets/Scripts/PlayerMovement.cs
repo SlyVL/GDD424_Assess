@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         // Apply forward movement
         rb.AddForce(transform.forward * forwardInput * MovementMultiplier, ForceMode.Acceleration);
 
-        // Simulate grip by reducing lateral slip
+        //chatgpt to do something with lateral velocity
         Vector3 forwardVel = Vector3.Dot(rb.velocity, transform.forward) * transform.forward;
         Vector3 lateralVel = Vector3.Dot(rb.velocity, transform.right) * transform.right;
         rb.velocity = forwardVel + lateralVel * 0.2f;
